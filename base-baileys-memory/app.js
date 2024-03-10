@@ -6,11 +6,11 @@ const MockAdapter = require('@bot-whatsapp/database/mock')
 
 
 const flowNoEntendi = addKeyword(['']).addAnswer('No pude entender tu respuesta. Por favor volver a elegír.', null, (ctx, { fallBack }) => {
-        return fallBack()
+        return fallBack();
     }
 )
 
-const flowDocs = addKeyword(['capacidades']).addAnswer(
+const flowComplejos = addKeyword(['complejos']).addAnswer(
     [
 
             "👉 *Capacidades*:",
@@ -27,33 +27,80 @@ const flowDocs = addKeyword(['capacidades']).addAnswer(
 )
 
 
-const flowGracias = addKeyword(['gracias', 'grac'])
-    .addAnswer('Gracias por probar este bot 🚀! Hasta luego.',null,async (_, { endFlow }) => {
-        return endFlow();
+const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones'])
+    .addAnswer(['No tenemos habitaciones disponibles en este momento.'], null, (_, { gotoFlow }) => {
+        return gotoFlow(flowPrincipal);
     })
 
-const flowDiscord = addKeyword(['autor']).addAnswer(
-    'Este bot fue creado por Sebastian Bocaccio',
+
+const flowVolverAlMenu = addKeyword([''])
+    .addAnswer('Volviendo al menu principal...', null, async (_, { gotoFlow }) => {
+        return gotoFlow(flowPrincipal)
+    }
+    )
+
+const flowInstalaciones = addKeyword(['instalaciones']).addAnswer('Las instalaciones que posee cada complejo son:')
+    .addAnswer(
+        [
+        '*Complejo A (Direccion):*',
+        '- Piscina Climatizada: Disfruta de un baño relajante en nuestra piscina climatizada.',
+        '- Jacuzzi: Relájate en nuestro jacuzzi, disponible para tu disfrute.',
+        '- Gimnasio: Mantente activo en nuestro gimnasio completamente equipado.',
+        '- Spa: Disfruta de tratamientos de spa exclusivos en nuestras instalaciones.'
+        ]
+    )
+    .addAnswer(
+        [
+            '*Complejo B (Direccion):*',
+            '- Piscina Climatizada: Disfruta de un baño relajante en nuestra piscina climatizada.',
+            '- Jacuzzi: Relájate en nuestro jacuzzi, disponible para tu disfrute.',
+            '- Gimnasio: Mantente activo en nuestro gimnasio completamente equipado.',
+            '- Spa: Disfruta de tratamientos de spa exclusivos en nuestras instalaciones.'
+            ]
+    )
+    .addAction(null, async (_, { gotoFlow }) => {
+        return gotoFlow(flowPrincipal)
+    })
+
+
+const flowReservas = addKeyword(['reservas']).addAnswer(
+    'Esta funcionalidad todavia no esta implementada. Por favor, intente luego.',
     null,
-    async (_, { endFlow }) => {
-        return endFlow();
+    async (_, { gotoFlow }) => {
+        return gotoFlow(flowPrincipal)
     }
 )
 
-const flowPrincipal = addKeyword(['hola', 'ole', 'alo', 'buenas', 'buenos', 'tardes', 'noches'])
-    .addAnswer('🙌 Hola bienvenido a este *Chatbot*')
+const flowHola = addKeyword(['hola', 'ole', 'alo', 'buenas', 'buenos', 'tardes', 'noches'])
+    .addAnswer(['¡Hola, Garcias por comunicarte con Atardeceres! ☀️','Estamos encantados de brindarte la informacion necesaria para que conozcas nuestros complejos.'],   null,
+        async (_, { gotoFlow }) => {
+            return gotoFlow(flowPrincipal)
+        }
+    )
+
+const flowHola2 = addKeyword(['hola', 'ole', 'alo', 'buenas', 'buenos', 'tardes', 'noches'])
+    .addAnswer(['¡Hola, Garcias por comunicarte con Atardeceres! ☀️','Estamos encantados de brindarte la informacion necesaria para que conozcas nuestros complejos.'],   null,
+        async (_, { gotoFlow }) => {
+            return gotoFlow(flowPrincipal)
+        }
+    )
+
+const flowPrincipal = addKeyword('')
     .addAnswer(
         [
-            'te comparto las siguientes opciones de interes:',
-            '👉 *capacidades* para ver la documentación',
-            '👉 *gracias*  para ver un mensaje de agradecimiento',
-            '👉 *autor* datos sobre el autor de este bot',
+            '1. *Complejos* 🏨 : Descubri informacion necesaria de cada uno de nuestros complejos, como localidad, ubicacion y fotos.',
+            '2. *Habitaciones* 🛏 : Conoce nuestras habitaciones y sus comodidades',
+            '3. *Instalaciones* 🏊🏻‍: Disfruta de las instalaciones cada uno de nuestros complejos',
+            '4. *Reservas* 📅: ¿Tenes la información necesaria para reservar? Descubri nuestras tarifas.',
             '',
-            'Por favor, elegí una de las opciones escribiendo la palabra clave.'
+            'Por favor, elegí una de las opciones escribiendo el número o la palabra.',
+            'Por ejemplo, si queres conocer nuestros Complejos escribi "complejos" o "1"',
+            '',
+            'Nuestro horario de atencion es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
         ],
         null,
         null,
-        [flowDocs, flowGracias, flowDiscord, flowNoEntendi]
+        [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowReservas, flowNoEntendi]
     )
 
 const flowNoEntendiInicial = addKeyword([''])
@@ -63,7 +110,7 @@ const flowNoEntendiInicial = addKeyword([''])
 
 const main = async () => {
     const adapterDB = new MockAdapter()
-    const adapterFlow = createFlow([flowPrincipal,flowNoEntendiInicial])
+    const adapterFlow = createFlow([flowHola,flowNoEntendiInicial])
     const adapterProvider = createProvider(BaileysProvider)
 
     createBot({
