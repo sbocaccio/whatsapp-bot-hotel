@@ -121,18 +121,37 @@ const flowInstalaciones = addKeyword(['instalaciones', '3'])
     })
 
 
-const flowTarifaCanuelas = addKeyword(['tarifas', '1']).addAnswer()
+const flowTarifasCanuelas = addKeyword(['cañuelas', '1']).
+addAnswer('Este mensaje envia una imagen', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg?raw=true'}) .addAction(null, async (_, { gotoFlow }) => {
+    return gotoFlow(flowPrincipalSinBienvenida)
+})
+const flowTarifasSanMiguel = addKeyword(['san miguel del monte', '2']).
+addAnswer('', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg', caption: 'Tarifas San Miguel del Monte'}).addAction(null, async (_, { gotoFlow }) => {  return gotoFlow(flowPrincipalSinBienvenida)})
+
+const flowReservasAux = addKeyword('').addAnswer('Otra reserva mas',null , async (ctx, { gotoFlow,state }) => {
+    console.log("Anda a la lacarte el culo")
+
+    if(myState === 'cañuelas'){
+        return gotoFlow(flowString);
+    }
+    if(text === '2' || text == 'san miguel del monte' || text === 'san miguel' || text === 'monte'){
+        return await flowDynamic({ media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg', caption: 'Tarifas Cañuelas'})
+    }
+    else throw new Error("No se encontro la opcion seleccionada");
+})
 
 const flowReservas = addKeyword(['reservas', '4']).addAnswer([
         "1. Tarifas Cañuelas",
         "2. Tarifas San Miguel del Monte",
         "3. Volver al menu principal"
-    ],
-    null,
-    []
-)
+    ],null, null, [flowTarifasCanuelas, flowTarifasSanMiguel])
 
-const flowReservasRespuesta = 1 ;
+const flowString = addKeyword(['ma']).addAnswer('Este mensaje envia una imagen', {
+    media: 'https://i.imgur.com/0HpzsEm.png',
+})
+
+
+
 const flowPrincipalSinBienvenida = addKeyword('')
     .addAnswer(
         [
@@ -150,7 +169,7 @@ const flowPrincipalSinBienvenida = addKeyword('')
         [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
 )
 
-const flowPrincipal = addKeyword('')
+const flowPrincipal = addKeyword('hola')
     .addAnswer(['¡Hola, gracias por comunicarte con Atardeceres! ☀️','Estamos encantados de brindarte la información necesaria para que conozcas nuestros complejos.'])
     .addAnswer(
         [
@@ -176,7 +195,7 @@ const flowNoEntendiInicial = addKeyword([''])
 
 const main = async () => {
     const adapterDB = new MockAdapter()
-    const adapterFlow = createFlow([flowPrincipal, flowNoEntendiInicial])
+    const adapterFlow = createFlow([flowPrincipal, flowString ,flowNoEntendiInicial ])
     const adapterProvider = createProvider(BaileysProvider)
 
     createBot({
