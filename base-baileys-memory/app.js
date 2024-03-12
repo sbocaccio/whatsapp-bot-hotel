@@ -121,21 +121,25 @@ const flowInstalaciones = addKeyword(['instalaciones', '3'])
     })
 
 
-const flowReservas = addKeyword(['reservas', '4']).addAnswer(
-    'Esta funcionalidad todavia no esta implementada. Por favor, intentá luego.',
+const flowTarifaCanuelas = addKeyword(['tarifas', '1']).addAnswer()
+
+const flowReservas = addKeyword(['reservas', '4']).addAnswer([
+        "1. Tarifas Cañuelas",
+        "2. Tarifas San Miguel del Monte",
+        "3. Volver al menu principal"
+    ],
     null,
-    async (_, { gotoFlow }) => {
-        return gotoFlow(flowPrincipalSinBienvenida)
-    }
+    []
 )
 
+const flowReservasRespuesta = 1 ;
 const flowPrincipalSinBienvenida = addKeyword('')
     .addAnswer(
         [
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
             '2. *Habitaciones* 🛏 : Conoce nuestras habitaciones, sus comodidades y su capacidad',
             '3. *Instalaciones* 🏊🏻‍: Conoce nuestras instalaciones y sus comodidades',
-            '4. *Reservas* 📅: ¿Tenes la información necesaria para reservar? Descubri nuestras tarifas.',
+            '4. *Reservas* 📅: ¿Estas listo para reservar? Acá podes encontrar tarifas y disponibilidads.',
             '',
             'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si queres conocer nuestros Complejos escribi "complejos" o "1"',
             '',
@@ -143,7 +147,7 @@ const flowPrincipalSinBienvenida = addKeyword('')
         ],
         null,
         null,
-        [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowReservas, flowNoEntendi]
+        [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
 )
 
 const flowPrincipal = addKeyword('')
@@ -153,7 +157,7 @@ const flowPrincipal = addKeyword('')
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
             '2. *Habitaciones* 🛏 : Conoce nuestras habitaciones, sus comodidades y su capacidad',
             '3. *Instalaciones* 🏊🏻‍: Conoce nuestras instalaciones y sus comodidades',
-            '4. *Reservas* 📅: ¿Tenes la información necesaria para reservar? Descubri nuestras tarifas.',
+            '4. *Reservas* 📅: ¿Estas listo para reservar? Acá podes encontrar tarifas y disponibilidad',
             '',
             'Por favor, elegí una de las opciones escribiendo el número o la palabra.',
             'Por ejemplo, si queres conocer nuestros Complejos escribi "complejos" o "1"',
@@ -162,7 +166,7 @@ const flowPrincipal = addKeyword('')
         ],
         null,
         null,
-        [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowReservas, flowNoEntendi]
+        [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
     )
 
 const flowNoEntendiInicial = addKeyword([''])
