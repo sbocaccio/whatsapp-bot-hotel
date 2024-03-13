@@ -51,10 +51,11 @@ const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
         [
             '1. Complejo Cañuelas: ',
             '',
-            'En este complejo podes encontrar tres tipos de habitaciones:',
-            '*a.* Monoambiente hasta 3 personas (1 camas doble – 1 cama individual)',
+            'En este complejo podés encontrar tres tipos de habitaciones:',
+            '*a.* Monoambiente hasta 3 personas (1 cama doble – 1 cama individual)',
             '*b.* Loft hasta 4 personas (1 cama doble – 1 cama individual – 1 catre)',
-            '*c.* Dos ambientes hasta 5 personas (1 cama doble – 1 cama individual – 2 sillon cama)',
+            '*c.* Dos ambientes hasta 5 personas (1 cama doble – 1 cama individual – 2 sillón cama)',
+            '',
             'Las unidades cuentan con:',
             '- Vajilla',
             '- Parrilla propia (solo loft)',
@@ -64,7 +65,7 @@ const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
             '- Aire acondicionado Frio-Calor',
             '- TV',
             '',
-            'Podes ver fotos en el siguiente enlace:',
+            'Podés ver fotos en el siguiente enlace:',
             'https://www.atardeceresaparts.com.ar/atardeceres-canuelas'
         ]
     )
@@ -72,9 +73,10 @@ const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
         [
             '2. Complejo San Miguel del Monte:',
             '',
-            'En este complejo podes encontrar dos tipos de habitaciones:',
-            '*a.* Monoambiente hasta 4 personas (1 cama doble -1 cama individual - 1 catre)',
-            '*b.* Dúplex hasta 6 personas (1 Cama doble – 2 camas individuales – 2 Catres)',
+            'En este complejo podés encontrar dos tipos de habitaciones:',
+            '*a.* Monoambiente hasta 4 personas (1 cama doble - 1 cama individual - 1 catre)',
+            '*b.* Dúplex hasta 6 personas (1 cama doble – 2 camas individuales – 2 catres)',
+            '',
             'Las unidades cuentan con:',
             '- Vajilla',
             '- Parrilla propia (solo loft)',
@@ -84,7 +86,7 @@ const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
             '- Aire acondicionado Frio-Calor',
             '- TV',
             '',
-            'Podes ver fotos en el siguiente enlace:',
+            'Podés ver fotos en el siguiente enlace:',
             'https://www.atardeceresaparts.com.ar/atardeceres-san-miguel-del-monte'
         ]
     )
@@ -122,45 +124,46 @@ const flowInstalaciones = addKeyword(['instalaciones', '3'])
 
 
 const flowTarifasCanuelas = addKeyword(['cañuelas', '1']).
-addAnswer('Este mensaje envia una imagen', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg?raw=true'}) .addAction(null, async (_, { gotoFlow }) => {
+addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg?raw=true'})
+    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva", null, async (_, { gotoFlow }) => {
     return gotoFlow(flowPrincipalSinBienvenida)
 })
-const flowTarifasSanMiguel = addKeyword(['san miguel del monte', '2']).
-addAnswer('', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg', caption: 'Tarifas San Miguel del Monte'}).addAction(null, async (_, { gotoFlow }) => {  return gotoFlow(flowPrincipalSinBienvenida)})
 
-const flowReservasAux = addKeyword('').addAnswer('Otra reserva mas',null , async (ctx, { gotoFlow,state }) => {
-    console.log("Anda a la lacarte el culo")
-
-    if(myState === 'cañuelas'){
-        return gotoFlow(flowString);
-    }
-    if(text === '2' || text == 'san miguel del monte' || text === 'san miguel' || text === 'monte'){
-        return await flowDynamic({ media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg', caption: 'Tarifas Cañuelas'})
-    }
-    else throw new Error("No se encontro la opcion seleccionada");
-})
+const flowTarifasSanMiguel = addKeyword(['cañuelas', '1']).
+addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_san_miguel.jpeg?raw=true'})
+    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva", null, async (_, { gotoFlow }) => {
+        return gotoFlow(flowPrincipalSinBienvenida)
+    })
 
 const flowReservas = addKeyword(['reservas', '4']).addAnswer([
         "1. Tarifas Cañuelas",
         "2. Tarifas San Miguel del Monte",
         "3. Volver al menu principal"
-    ],null, null, [flowTarifasCanuelas, flowTarifasSanMiguel])
-
-const flowString = addKeyword(['ma']).addAnswer('Este mensaje envia una imagen', {
-    media: 'https://i.imgur.com/0HpzsEm.png',
+    ],{capture:true},async(ctx, {gotoFlow}) => {
+    const numero = ctx.body
+    if(numero == 1){
+        return gotoFlow(flowTarifasCanuelas)
+    }
+    if(numero == 2){
+        return gotoFlow(flowTarifasSanMiguel)
+    }
+    if(numero == 3){
+        return gotoFlow(flowPrincipalSinBienvenida)
+    }
+    else{
+        return gotoFlow(flowNoEntendi);
+    }
 })
-
-
 
 const flowPrincipalSinBienvenida = addKeyword('')
     .addAnswer(
         [
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
-            '2. *Habitaciones* 🛏 : Conoce nuestras habitaciones, sus comodidades y su capacidad',
-            '3. *Instalaciones* 🏊🏻‍: Conoce nuestras instalaciones y sus comodidades',
-            '4. *Reservas* 📅: ¿Estas listo para reservar? Acá podes encontrar tarifas y disponibilidads.',
+            '2. *Habitaciones* 🛏 : Conocé nuestras habitaciones, sus comodidades y su capacidad',
+            '3. *Instalaciones* 🏊🏻‍: Conocé nuestras instalaciones y sus comodidades',
+            '4. *Reservas* 📅: ¿Estás listo para reservar? Acá podés encontrar tarifas y disponibilidads.',
             '',
-            'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si queres conocer nuestros Complejos escribi "complejos" o "1"',
+            'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si querés conocer nuestros complejos escribi "complejos" o "1"',
             '',
             'Nuestro horario de atencion es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
         ],
@@ -169,17 +172,17 @@ const flowPrincipalSinBienvenida = addKeyword('')
         [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
 )
 
-const flowPrincipal = addKeyword('hola')
+const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', 'noches', 'que tal', 'como estas')
     .addAnswer(['¡Hola, gracias por comunicarte con Atardeceres! ☀️','Estamos encantados de brindarte la información necesaria para que conozcas nuestros complejos.'])
     .addAnswer(
         [
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
-            '2. *Habitaciones* 🛏 : Conoce nuestras habitaciones, sus comodidades y su capacidad',
-            '3. *Instalaciones* 🏊🏻‍: Conoce nuestras instalaciones y sus comodidades',
-            '4. *Reservas* 📅: ¿Estas listo para reservar? Acá podes encontrar tarifas y disponibilidad',
+            '2. *Habitaciones* 🛏 : Conocé nuestras habitaciones, sus comodidades y su capacidad',
+            '3. *Instalaciones* 🏊🏻‍: Conocé nuestras instalaciones y sus comodidades',
+            '4. *Reservas* 📅: ¿Estás listo para reservar? Acá podés encontrar tarifas y disponibilidad',
             '',
             'Por favor, elegí una de las opciones escribiendo el número o la palabra.',
-            'Por ejemplo, si queres conocer nuestros Complejos escribi "complejos" o "1"',
+            'Por ejemplo, si querés conocer nuestros complejos escribi "complejos" o "1"',
             '',
             'Nuestro horario de atencion es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
         ],
@@ -189,13 +192,14 @@ const flowPrincipal = addKeyword('hola')
     )
 
 const flowNoEntendiInicial = addKeyword([''])
-    .addAnswer('Buenas! Para iniciar una conversación escriba "Hola"', null,async (_, { endFlow }) => {
+    .addAnswer('Buenas! Para iniciar una conversación escribí "Hola"', null,async (_, { endFlow }) => {
         return endFlow();
     })
 
+
 const main = async () => {
     const adapterDB = new MockAdapter()
-    const adapterFlow = createFlow([flowPrincipal, flowString ,flowNoEntendiInicial ])
+    const adapterFlow = createFlow([flowPrincipal ,flowNoEntendiInicial ])
     const adapterProvider = createProvider(BaileysProvider)
 
     createBot({
