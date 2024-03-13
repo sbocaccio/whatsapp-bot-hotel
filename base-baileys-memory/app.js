@@ -163,9 +163,9 @@ const flowPrincipalSinBienvenida = addKeyword('')
             '3. *Instalaciones* 🏊🏻‍: Conocé nuestras instalaciones y sus comodidades',
             '4. *Reservas* 📅: ¿Estás listo para reservar? Acá podés encontrar tarifas y disponibilidads.',
             '',
-            'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si querés conocer nuestros complejos escribi "complejos" o "1"',
+            'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si querés conocer nuestros complejos escribí "complejos" o "1"',
             '',
-            'Nuestro horario de atencion es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
+            'Nuestro horario de atención es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
         ],
         null,
         null,
@@ -181,10 +181,9 @@ const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', '
             '3. *Instalaciones* 🏊🏻‍: Conocé nuestras instalaciones y sus comodidades',
             '4. *Reservas* 📅: ¿Estás listo para reservar? Acá podés encontrar tarifas y disponibilidad',
             '',
-            'Por favor, elegí una de las opciones escribiendo el número o la palabra.',
-            'Por ejemplo, si querés conocer nuestros complejos escribi "complejos" o "1"',
+            'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si querés conocer nuestros complejos escribí "complejos" o "1"',
             '',
-            'Nuestro horario de atencion es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
+            'Nuestro horario de atención es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
         ],
         null,
         null,
