@@ -173,7 +173,7 @@ const flowPrincipalSinBienvenida = addKeyword('')
 )
 
 const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', 'noches', 'que tal', 'como estas')
-    .addAnswer(['¡Hola, gracias por comunicarte con Atardeceres! ☀️','Estamos encantados de brindarte la información necesaria para que conozcas nuestros complejos.'])
+    .addAnswer(['¡Hola, soy el asistente virtual de Atardeceres! Gracias por comunicarte! ☀️','Estoy encantados de brindarte la información necesaria para que conozcas nuestros complejos.'])
     .addAnswer(
         [
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
