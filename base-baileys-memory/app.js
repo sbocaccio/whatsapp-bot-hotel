@@ -6,10 +6,9 @@ import BaileysProvider from '@bot-whatsapp/provider/baileys';
 import MockAdapter from '@bot-whatsapp/database/mock';
 import { flowNoEntendiInicial } from './flows/flowNoEntendiInicial.js';
 import { flowNoEntendi } from './flows/flowNoEntendi.js';
-import {flowTarifasSanMiguel} from "./flows/flowTarifasSanMiguel.js";
-import {flowTarifasCanuelas} from "./flows/flowTarifasCanuelas.js";
 import {flowComplejos} from "./flows/flowComplejos.js";
 import {flowHabitaciones} from "./flows/flowHabitaciones.js";
+import {flowReservas} from "./flows/flowReservas.js";
 
 export const flowInstalaciones = addKeyword(['instalaciones', '3'])
     .addAnswer(
@@ -39,27 +38,6 @@ export const flowInstalaciones = addKeyword(['instalaciones', '3'])
         return gotoFlow(flowPrincipalSinBienvenida)
     })
 
-const flowReservas = addKeyword(['reservas', '4']).addAnswer([
-        "1. Tarifas Cañuelas",
-        "2. Tarifas San Miguel del Monte",
-        "3. Volver al menu principal"
-    ],{capture:true},async(ctx, {gotoFlow, state}) => {
-    const numero = ctx.body
-    if(numero == 1){
-        await state.update({ atendido: true })
-        return gotoFlow(flowTarifasCanuelas)
-    }
-    if(numero == 2){
-        await state.update({ atendido: true })
-        return gotoFlow(flowTarifasSanMiguel)
-    }
-    if(numero == 3){
-        return gotoFlow(flowPrincipalSinBienvenida)
-    }
-    else{
-        return gotoFlow(flowNoEntendi);
-    }
-})
 
 const actionYaFueAtendido = async (ctx, { state, endFlow }) => {
     const myState = state.getMyState()
