@@ -10,13 +10,7 @@ import {flowComplejos} from "./flows/flowComplejos.js";
 import {flowHabitaciones} from "./flows/flowHabitaciones.js";
 import {flowReservas} from "./flows/flowReservas.js";
 import {flowInstalaciones} from "./flows/flowInstalaciones.js";
-
-const actionYaFueAtendido = async (ctx, { state, endFlow }) => {
-    const myState = state.getMyState()
-    if (myState && myState.atendido) {
-       return endFlow();
-    }
-}
+import {actionYaFueAtendido} from "./actions/actionYaFueAtendido.js";
 
 const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', 'noches', 'que tal', 'como estas')
     .addAction(actionYaFueAtendido)
