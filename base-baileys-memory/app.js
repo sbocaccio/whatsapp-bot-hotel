@@ -90,7 +90,7 @@ const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
             'https://www.atardeceresaparts.com.ar/atardeceres-san-miguel-del-monte'
         ]
     )
-    .addAction(null, async (_, { gotoFlow }) => {
+    .addAction( async (_, { gotoFlow }) => {
         return gotoFlow(flowPrincipalSinBienvenida)
     })
 
@@ -118,33 +118,34 @@ const flowInstalaciones = addKeyword(['instalaciones', '3'])
         '- Fogones para recrear en familia',
     ]
     )
-    .addAction(null, async (_, { gotoFlow }) => {
+    .addAction(async (_, { gotoFlow }) => {
         return gotoFlow(flowPrincipalSinBienvenida)
     })
 
 
-const flowTarifasCanuelas = addKeyword(['cañuelas', '1']).addAnswer('Estamos trayendo la información. Esto puede tardar unos segundos.', null, null).
-addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg?raw=true'})
-    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva", null, async (_, { gotoFlow }) => {
-    return gotoFlow(flowPrincipalSinBienvenida)
-})
+const flowTarifasCanuelas = addKeyword(['cañuelas', '1'])
+    .addAnswer('Estamos trayendo la información. Esto puede tardar unos segundos.', null, null)
+    .addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg?raw=true'})
+    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva")
 
-const flowTarifasSanMiguel = addKeyword(['cañuelas', '1']).addAnswer('Estamos trayendo la información. Esto puede tardar unos segundos.', null, null).
-addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_san_miguel.jpeg?raw=true'})
-    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva", null, async (_, { gotoFlow }) => {
-        return gotoFlow(flowPrincipalSinBienvenida)
-    })
+const flowTarifasSanMiguel = addKeyword(['cañuelas', '1'])
+    .addAnswer('Estamos trayendo la información. Esto puede tardar unos segundos.', null, null)
+    .addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_san_miguel.jpeg?raw=true'})
+    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva")
+
 
 const flowReservas = addKeyword(['reservas', '4']).addAnswer([
         "1. Tarifas Cañuelas",
         "2. Tarifas San Miguel del Monte",
         "3. Volver al menu principal"
-    ],{capture:true},async(ctx, {gotoFlow}) => {
+    ],{capture:true},async(ctx, {gotoFlow, state}) => {
     const numero = ctx.body
     if(numero == 1){
+        await state.update({ atendido: true })
         return gotoFlow(flowTarifasCanuelas)
     }
     if(numero == 2){
+        await state.update({ atendido: true })
         return gotoFlow(flowTarifasSanMiguel)
     }
     if(numero == 3){
@@ -172,7 +173,15 @@ const flowPrincipalSinBienvenida = addKeyword('')
         [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
 )
 
+const actionYaFueAtendido = async (ctx, { state, endFlow }) => {
+    const myState = state.getMyState()
+    if (myState?.atendido) {
+       return endFlow();
+    }
+}
+
 const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', 'noches', 'que tal', 'como estas')
+    .addAction(actionYaFueAtendido)
     .addAnswer(['¡Hola, soy el asistente virtual de Atardeceres! Gracias por comunicarte! ☀️','Estoy encantados de brindarte la información necesaria para que conozcas nuestros complejos.'])
     .addAnswer(
         [
@@ -191,14 +200,14 @@ const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', '
     )
 
 const flowNoEntendiInicial = addKeyword([''])
+    .addAction(actionYaFueAtendido)
     .addAnswer('Buenas! Para iniciar una conversación escribí "Hola"', null,async (_, { endFlow }) => {
         return endFlow();
     })
 
-
 const main = async () => {
     const adapterDB = new MockAdapter()
-    const adapterFlow = createFlow([flowPrincipal ,flowNoEntendiInicial ])
+    const adapterFlow = createFlow([flowPrincipal, flowNoEntendiInicial ])
     const adapterProvider = createProvider(BaileysProvider)
 
     createBot({
