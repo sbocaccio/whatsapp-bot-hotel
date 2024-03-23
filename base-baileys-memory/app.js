@@ -1,14 +1,11 @@
-const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot')
 
-const QRPortalWeb = require('@bot-whatsapp/portal')
-const BaileysProvider = require('@bot-whatsapp/provider/baileys')
-const MockAdapter = require('@bot-whatsapp/database/mock')
-
-
-const flowNoEntendi = addKeyword(['']).addAnswer('No pude entender tu respuesta. Por favor volvé a elegír.', null, (ctx, { fallBack }) => {
-        return fallBack();
-    }
-)
+import pkg from '@bot-whatsapp/bot';
+const { createBot, createProvider, createFlow, addKeyword } = pkg;
+import QRPortalWeb from '@bot-whatsapp/portal';
+import BaileysProvider from '@bot-whatsapp/provider/baileys';
+import MockAdapter from '@bot-whatsapp/database/mock';
+import { flowNoEntendiInicial } from './flows/flowNoEntendiInicial.js';
+import { flowNoEntendi } from './flows/flowNoEntendi.js';
 
 const flowComplejos = addKeyword(['complejos','1'], ).
     addAnswer(
@@ -156,26 +153,9 @@ const flowReservas = addKeyword(['reservas', '4']).addAnswer([
     }
 })
 
-const flowPrincipalSinBienvenida = addKeyword('')
-    .addAnswer(
-        [
-            '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
-            '2. *Habitaciones* 🛏 : Conocé nuestras habitaciones, sus comodidades y su capacidad',
-            '3. *Instalaciones* 🏊🏻‍: Conocé nuestras instalaciones y sus comodidades',
-            '4. *Reservas* 📅: ¿Estás listo para reservar? Acá podés encontrar tarifas y disponibilidads.',
-            '',
-            'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si querés conocer nuestros complejos escribí "complejos" o "1"',
-            '',
-            'Nuestro horario de atención es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
-        ],
-        null,
-        null,
-        [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
-)
-
 const actionYaFueAtendido = async (ctx, { state, endFlow }) => {
     const myState = state.getMyState()
-    if (myState?.atendido) {
+    if (myState && myState.atendido) {
        return endFlow();
     }
 }
@@ -199,11 +179,22 @@ const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', '
         [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
     )
 
-const flowNoEntendiInicial = addKeyword([''])
-    .addAction(actionYaFueAtendido)
-    .addAnswer('Buenas! Para iniciar una conversación escribí "Hola"', null,async (_, { endFlow }) => {
-        return endFlow();
-    })
+const flowPrincipalSinBienvenida = addKeyword('')
+    .addAnswer(
+        [
+            '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
+            '2. *Habitaciones* 🛏 : Conocé nuestras habitaciones, sus comodidades y su capacidad',
+            '3. *Instalaciones* 🏊🏻‍: Conocé nuestras instalaciones y sus comodidades',
+            '4. *Reservas* 📅: ¿Estás listo para reservar? Acá podés encontrar tarifas y disponibilidads.',
+            '',
+            'Por favor, elegí una de las opciones escribiendo el número o la palabra. Por ejemplo, si querés conocer nuestros complejos escribí "complejos" o "1"',
+            '',
+            'Nuestro horario de atención es de 09:00 hs a 20:00 de Lunes a Viernes, Sábados de 10:00 hs a 16:00 hs.'
+        ],
+        null,
+        null,
+        [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
+    )
 
 const main = async () => {
     const adapterDB = new MockAdapter()

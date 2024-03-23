@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "",
     "main": "app.js",
+    "engines" : {
+        "npm" : "16.14",
+        "node" : "18.0"
+    },
     "scripts": {
         "prestart": "npx eslint . --no-ignore",
         "pre-copy": "cd .. && npm run  copy.lib base-baileys-memory",
@@ -25,5 +29,6 @@
         "eslint-plugin-bot-whatsapp": "latest"
     },
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "type": "module"
 }
