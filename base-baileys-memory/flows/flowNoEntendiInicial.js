@@ -1,5 +1,5 @@
 import pkg from '@bot-whatsapp/bot';
-const { addKeyword, addAnswer, addAction } = pkg;
+const { addKeyword } = pkg;
 
 const actionYaFueAtendido = async (_, { state, endFlow }) => {
     const myState = state.getMyState()

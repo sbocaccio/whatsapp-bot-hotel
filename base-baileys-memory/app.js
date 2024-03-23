@@ -6,92 +6,12 @@ import BaileysProvider from '@bot-whatsapp/provider/baileys';
 import MockAdapter from '@bot-whatsapp/database/mock';
 import { flowNoEntendiInicial } from './flows/flowNoEntendiInicial.js';
 import { flowNoEntendi } from './flows/flowNoEntendi.js';
+import {flowTarifasSanMiguel} from "./flows/flowTarifasSanMiguel.js";
+import {flowTarifasCanuelas} from "./flows/flowTarifasCanuelas.js";
+import {flowComplejos} from "./flows/flowComplejos.js";
+import {flowHabitaciones} from "./flows/flowHabitaciones.js";
 
-const flowComplejos = addKeyword(['complejos','1'], ).
-    addAnswer(
-    [
-
-            "1. San Miguel del Monte",
-            " El entorno de Atardeceres Apart Hotel, en San Miguel del Monte, presenta un escenario que combina la tranquilidad " +
-            "de un pueblo con la belleza de su entorno natural. Alrededor de esta ubicación, encontrarás calles arboladas y pintorescas, " +
-            "con casas de estilo tradicional que reflejan la historia y la identidad del lugar. Nuestro complejo se encuentra cerca de lagunas " +
-            "y áreas de recreación, lo que brinda la oportunidad de disfrutar de actividades al aire libre como pesca, navegación o simplemente relajarse " +
-            "junto al agua.",
-            '',
-            "Te invitamos a ver nuestra página:",
-            "https://www.atardeceresaparts.com.ar/atardeceres-san-miguel-del-monte",
-            '',
-            "📍Dirección: Av. De Las Victorias 236, San Miguel del Monte"
-    ]
-    ).addAnswer(
-    [
-        "2. Cañuelas ",
-        "El entorno de Atardeceres Apartments, ofrece un paisaje " +
-        "que combina la tranquilidad del campo con la cercanía de la ciudad. Cañuelas, la " +
-        "ciudad más próxima, ofrece una variedad de atracciones y servicios adicionales, " +
-        "como restaurantes que sirven platos típicos de la gastronomía argentina, tiendas " +
-        "locales donde encontrar productos regionales y espacios recreativos para " +
-        "disfrutar al aire libre.",
-        '',
-        "Te invitamos a ver nuestra página:",
-        "https://www.atardeceresaparts.com.ar/atardeceres-canuelas",
-        '',
-        "📍Dirección: Castelli 520, Cañuelas"
-    ]
-    , null, async (_, { gotoFlow }) => {
-        return gotoFlow(flowPrincipalSinBienvenida);
-    })
-
-
-const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
-    .addAnswer(
-        [
-            '1. Complejo Cañuelas: ',
-            '',
-            'En este complejo podés encontrar tres tipos de habitaciones:',
-            '*a.* Monoambiente hasta 3 personas (1 cama doble – 1 cama individual)',
-            '*b.* Loft hasta 4 personas (1 cama doble – 1 cama individual – 1 catre)',
-            '*c.* Dos ambientes hasta 5 personas (1 cama doble – 1 cama individual – 2 sillón cama)',
-            '',
-            'Las unidades cuentan con:',
-            '- Vajilla',
-            '- Parrilla propia (solo loft)',
-            '- Heladera',
-            '- Microondas',
-            '- Pava eléctrica',
-            '- Aire acondicionado Frio-Calor',
-            '- TV',
-            '',
-            'Podés ver fotos en el siguiente enlace:',
-            'https://www.atardeceresaparts.com.ar/atardeceres-canuelas'
-        ]
-    )
-    .addAnswer(
-        [
-            '2. Complejo San Miguel del Monte:',
-            '',
-            'En este complejo podés encontrar dos tipos de habitaciones:',
-            '*a.* Monoambiente hasta 4 personas (1 cama doble - 1 cama individual - 1 catre)',
-            '*b.* Dúplex hasta 6 personas (1 cama doble – 2 camas individuales – 2 catres)',
-            '',
-            'Las unidades cuentan con:',
-            '- Vajilla',
-            '- Parrilla propia (solo loft)',
-            '- Heladera',
-            '- Microondas',
-            '- Pava eléctrica',
-            '- Aire acondicionado Frio-Calor',
-            '- TV',
-            '',
-            'Podés ver fotos en el siguiente enlace:',
-            'https://www.atardeceresaparts.com.ar/atardeceres-san-miguel-del-monte'
-        ]
-    )
-    .addAction( async (_, { gotoFlow }) => {
-        return gotoFlow(flowPrincipalSinBienvenida)
-    })
-
-const flowInstalaciones = addKeyword(['instalaciones', '3'])
+export const flowInstalaciones = addKeyword(['instalaciones', '3'])
     .addAnswer(
         [
         '1. Complejo Cañuelas: ',
@@ -118,18 +38,6 @@ const flowInstalaciones = addKeyword(['instalaciones', '3'])
     .addAction(async (_, { gotoFlow }) => {
         return gotoFlow(flowPrincipalSinBienvenida)
     })
-
-
-const flowTarifasCanuelas = addKeyword(['cañuelas', '1'])
-    .addAnswer('Estamos trayendo la información. Esto puede tardar unos segundos.', null, null)
-    .addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_canuelas.jpeg?raw=true'})
-    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva")
-
-const flowTarifasSanMiguel = addKeyword(['cañuelas', '1'])
-    .addAnswer('Estamos trayendo la información. Esto puede tardar unos segundos.', null, null)
-    .addAnswer(' ', { media: 'https://github.com/sbocaccio/whatsapp-bot-hotel/blob/daniel-bot/base-baileys-memory/images/tarifas_san_miguel.jpeg?raw=true'})
-    .addAnswer("Nos estaremos comunicando personalmente en la brevedad para que puedas confirmar una reserva")
-
 
 const flowReservas = addKeyword(['reservas', '4']).addAnswer([
         "1. Tarifas Cañuelas",
@@ -179,7 +87,7 @@ const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', '
         [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
     )
 
-const flowPrincipalSinBienvenida = addKeyword('')
+export const flowPrincipalSinBienvenida = addKeyword('')
     .addAnswer(
         [
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
