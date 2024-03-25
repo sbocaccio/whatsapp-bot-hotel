@@ -8,7 +8,7 @@ export const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
         [
             '1. Complejo Cañuelas: ',
             '',
-            'En este complejo podés encontrar tres tipos de habitaciones:',
+            'En este complejo podés encontrar tres tipos de departamentos:',
             '*a.* Monoambiente hasta 3 personas (1 cama doble – 1 cama individual)',
             '*b.* Loft hasta 4 personas (1 cama doble – 1 cama individual – 1 catre)',
             '*c.* Dos ambientes hasta 5 personas (1 cama doble – 1 cama individual – 2 sillón cama)',
@@ -30,7 +30,7 @@ export const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
         [
             '2. Complejo San Miguel del Monte:',
             '',
-            'En este complejo podés encontrar dos tipos de habitaciones:',
+            'En este complejo podés encontrar dos tipos de cabañas:',
             '*a.* Monoambiente hasta 4 personas (1 cama doble - 1 cama individual - 1 catre)',
             '*b.* Dúplex hasta 6 personas (1 cama doble – 2 camas individuales – 2 catres)',
             '',
