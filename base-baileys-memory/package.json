@@ -3,9 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "app.js",
-    "engines" : {
-        "npm" : "16.14",
-        "node" : "18.0"
+    "engines": {
+        "npm": "16.14",
+        "node": "18.0"
     },
     "scripts": {
         "prestart": "npx eslint . --no-ignore",
@@ -22,6 +22,7 @@
         "@bot-whatsapp/provider": "latest",
         "@whiskeysockets/baileys": "6.5.0",
         "cache-manager": "5.2.4",
+        "dotenv": "^16.4.5",
         "wa-sticker-formatter": "4.4.4"
     },
     "devDependencies": {

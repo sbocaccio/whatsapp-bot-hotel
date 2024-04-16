@@ -3,7 +3,6 @@ import pkg from '@bot-whatsapp/bot';
 const { createBot, createProvider, createFlow, addKeyword } = pkg;
 import QRPortalWeb from '@bot-whatsapp/portal';
 import BaileysProvider from '@bot-whatsapp/provider/baileys';
-import MockAdapter from '@bot-whatsapp/database/mock';
 import { flowNoEntendiInicial } from './flows/flowNoEntendiInicial.js';
 import { flowNoEntendi } from './flows/flowNoEntendi.js';
 import {flowComplejos} from "./flows/flowComplejos.js";
@@ -12,6 +11,13 @@ import {flowReservas} from "./flows/flowReservas.js";
 import {flowInstalaciones} from "./flows/flowInstalaciones.js";
 import {actionYaFueAtendido} from "./actions/actionYaFueAtendido.js";
 import {flowNosComunicaremos} from "./flows/flowNosComunicaremos.js";
+import MockAdapter from '@bot-whatsapp/database/mock';
+import {PostgreService} from "./database/postgre.service.js";
+import {FlowCompletionTrackerService} from "./services/flowCompletionTracker.service.js";
+import {LoggerService} from "./services/logger.service.js";
+import dotenv from 'dotenv';
+
+
 
 export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "información"])
     .addAnswer(
@@ -49,6 +55,21 @@ const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', '
 
 
 const main = async () => {
+
+    dotenv.config();
+    const postgresHelper = new PostgreService();
+    const loggerService = new LoggerService();
+    let completedFlowPhones;
+    try{
+        completedFlowPhones = await postgresHelper.getPhones();
+        loggerService.log('Completed flows from database', completedFlowPhones)
+    }
+    catch(e){
+        loggerService.error('Error getting completed flows from database', e)
+        completedFlowPhones = []
+    }
+    global.flowCompletionTrackerService = new FlowCompletionTrackerService(postgresHelper, completedFlowPhones);
+
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow([flowPrincipal, flowNoEntendiInicial ])
     const adapterProvider = createProvider(BaileysProvider)

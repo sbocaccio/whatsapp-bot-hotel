@@ -10,7 +10,7 @@ export const flowReservas = addKeyword(['reservas', '4']).addAnswer([
 ],{capture:true},async(ctx, {gotoFlow, state}) => {
     const numero = ctx.body
     if(numero == 1){
-        await state.update({ atendido: true })
+        await global.flowCompletionTrackerService.setCompletedFlow(ctx.from, state)
         return gotoFlow(flowTarifas)
     }
     if(numero == 2){
