@@ -21,6 +21,7 @@ import {PowerService} from "./services/power.service.js";
 
 export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "información", 'PRENDER', 'APAGAR'])
     .addAction(actionPower)
+    .addAction(actionYaFueAtendido)
     .addAnswer(
         [
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',

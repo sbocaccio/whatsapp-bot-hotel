@@ -43,7 +43,8 @@ export class PostgreService {
 
     async getPhones() {
         const query = 'SELECT phone FROM completed_flow';
-        return this.query(query);
+        const rows = await this.query(query);
+        return rows.map(row => row.phone);
     }
 
     async getBotStatus() {
