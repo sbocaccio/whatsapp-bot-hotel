@@ -16,10 +16,11 @@ import {PostgreService} from "./database/postgre.service.js";
 import {FlowCompletionTrackerService} from "./services/flowCompletionTracker.service.js";
 import {LoggerService} from "./services/logger.service.js";
 import dotenv from 'dotenv';
+import {actionPower} from "./actions/actionPower.js";
+import {PowerService} from "./services/power.service.js";
 
-
-
-export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "información"])
+export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "información", 'PRENDER', 'APAGAR'])
+    .addAction(actionPower)
     .addAnswer(
         [
             '1. *Complejos* 🏨: Contamos con dos complejos Atardeceres Apart Hotel en San Miguel del Monte y Atardeceres Apartments en Cañuelas.',
@@ -36,7 +37,8 @@ export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "inform
         [flowComplejos, flowHabitaciones, flowInstalaciones,flowReservas, flowNoEntendi]
     )
 
-const flowPrincipal = addKeyword('hola', 'buenas', 'tardes', 'buenos', 'dias', 'noches', 'que tal', 'como estas')
+const flowPrincipal = addKeyword(['hola', 'buenas', 'tardes', 'buenos', 'dias', 'noches', 'que tal', 'como estas', 'APAGAR', 'PRENDER'])
+    .addAction(actionPower)
     .addAction(actionYaFueAtendido)
     .addAnswer(['¡Hola, soy el asistente virtual de Atardeceres! Gracias por comunicarte! ☀️','Estoy encantado de brindarte la información necesaria para que conozcas nuestros complejos.'])
     .addAnswer(
@@ -59,6 +61,9 @@ const main = async () => {
     dotenv.config();
     const postgresHelper = new PostgreService();
     const loggerService = new LoggerService();
+    const powerService = new PowerService(postgresHelper);
+
+
     let completedFlowPhones;
     try{
         completedFlowPhones = await postgresHelper.getPhones();
@@ -68,7 +73,10 @@ const main = async () => {
         loggerService.error('Error getting completed flows from database', e)
         completedFlowPhones = []
     }
+
     global.flowCompletionTrackerService = new FlowCompletionTrackerService(postgresHelper, completedFlowPhones);
+    global.powerService = powerService;
+    global.botIsOn = await powerService.isOn();
 
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow([flowPrincipal, flowNoEntendiInicial ])
