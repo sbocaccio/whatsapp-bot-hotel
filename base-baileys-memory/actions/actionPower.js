@@ -9,5 +9,5 @@ export const actionPower = async (ctx, { endFlow }) => {
     return endFlow(message);
   }
 
-  if(!global.botIsOn) return endFlow('El bot está apagado, no puedo responder a tus mensajes.');
+  if(!global.botIsOn) return endFlow();
 };
