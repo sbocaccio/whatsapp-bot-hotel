@@ -8,6 +8,7 @@ COPY . .
 RUN mkdir -p /app/bot_sessions
 ARG COPY_SESSION=false
 RUN if [ "$COPY_SESSION" = "true" ]; then \
+    echo "Copying session files..."; \
     cp -r /app/saved_session/* /app/bot_sessions/; \
 fi
 
