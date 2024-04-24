@@ -22,16 +22,26 @@ export class PostgreService {
     }
 
     async query(query, params = []) {
-        try {
-            await this.connect();
-            const res = await this.pgClient.query(query, params);
-            return res.rows;
-        } catch (err) {
-            this.loggerService.error('Error executing query:', query, err);
-            throw err;
-        } finally {
-            await this.disconnect();
+        let retryCount = 0;
+        const maxRetries = 1;
+
+        while (retryCount <= maxRetries) {
+            try {
+                await this.connect();
+                const res = await this.pgClient.query(query, params);
+                return res.rows;
+            } catch (err) {
+                retryCount++;
+                this.loggerService.error('Error executing query:', query, err);
+                if (retryCount <= maxRetries) {
+                    this.loggerService.info(`Retrying query, attempt ${retryCount} of ${maxRetries}`);
+                }
+            } finally {
+                await this.disconnect();
+            }
         }
+
+        throw new Error('Query failed after retrying.');
     }
 
     async addPhone(phone) {
