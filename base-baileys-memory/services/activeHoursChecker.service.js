@@ -1,8 +1,10 @@
 export class ActiveHoursChecker{
     
     isWithinActiveHours(startHour, endHour) {
+        const OFFSET = 3 
         const currentDate = new Date();
         const currentHour = currentDate.getHours();
+        currentHour = currentHour - OFFSET
       
         console.log("Current hour:", currentHour)
         // Check if the current hour is within the active range
