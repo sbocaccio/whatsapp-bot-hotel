@@ -18,6 +18,8 @@ import {LoggerService} from "./services/logger.service.js";
 import dotenv from 'dotenv';
 import {actionPower} from "./actions/actionPower.js";
 import {PowerService} from "./services/power.service.js";
+import {ActiveHoursChecker} from "./services/activeHoursChecker.service.js";
+import {actionActiveHours} from "./actions/actionActiveHours.js"
 
 export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "información", 'PRENDER', 'APAGAR'])
     .addAction(actionPower)
@@ -40,6 +42,7 @@ export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "inform
 
 const flowPrincipal = addKeyword(['hola', 'buenas', 'tardes', 'buenos', 'dias', 'noches', 'que tal', 'como estas', 'APAGAR', 'PRENDER'])
     .addAction(actionPower)
+    .addAction(actionActiveHours)
     .addAction(actionYaFueAtendido)
     .addAnswer(['¡Hola, soy el asistente virtual de Atardeceres! Gracias por comunicarte! ☀️','Estoy encantado de brindarte la información necesaria para que conozcas nuestros complejos.'])
     .addAnswer(
@@ -63,6 +66,7 @@ const main = async () => {
     const postgresHelper = new PostgreService();
     const loggerService = new LoggerService();
     const powerService = new PowerService(postgresHelper);
+    const actionActiveHours = new ActiveHoursChecker();
 
 
     let completedFlowPhones;
@@ -78,6 +82,7 @@ const main = async () => {
     global.flowCompletionTrackerService = new FlowCompletionTrackerService(postgresHelper, completedFlowPhones);
     global.powerService = powerService;
     global.botIsOn = await powerService.isOn();
+    global.actionActiveHours = actionActiveHours;
 
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow([flowPrincipal, flowNoEntendiInicial ])
