@@ -82,7 +82,7 @@ const main = async () => {
     global.flowCompletionTrackerService = new FlowCompletionTrackerService(postgresHelper, completedFlowPhones);
     global.powerService = powerService;
     global.botIsOn = await powerService.isOn();
-    global.actionActiveHours = actionActiveHours;
+    global.activeHoursChecker = actionActiveHours;
 
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow([flowPrincipal, flowNoEntendiInicial ])
