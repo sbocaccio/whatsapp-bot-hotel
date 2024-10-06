@@ -3,7 +3,7 @@ export class ActiveHoursChecker{
     isWithinActiveHours(startHour, endHour) {
         const OFFSET = 3 
         const currentDate = new Date();
-        const currentHour = currentDate.getHours();
+        var currentHour = currentDate.getHours();
         currentHour = currentHour - OFFSET
       
         console.log("Current hour:", currentHour)
