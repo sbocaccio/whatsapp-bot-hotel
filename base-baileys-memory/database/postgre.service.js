@@ -34,7 +34,7 @@ export class PostgreService {
                 retryCount++;
                 this.loggerService.error('Error executing query:', query, err);
                 if (retryCount <= maxRetries) {
-                    this.loggerService.info(`Retrying query, attempt ${retryCount} of ${maxRetries}`);
+                    this.loggerService.log(`Retrying query, attempt ${retryCount} of ${maxRetries}`);
                 }
             } finally {
                 await this.disconnect();

@@ -7,8 +7,8 @@ export class ActiveHoursChecker{
         currentHour = currentHour - OFFSET
       
         console.log("Current hour:", currentHour)
-        // Check if the current hour is within the active range
-        if (currentHour >= startHour && currentHour < endHour) {
+        // This only works if startHour > endHour (startHour = 21hs, endHour = 9hs)
+        if (currentHour >= startHour || currentHour < endHour) {
           return true;
         }
         
