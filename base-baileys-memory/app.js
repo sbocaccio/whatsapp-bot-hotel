@@ -23,6 +23,7 @@ import {actionActiveHours} from "./actions/actionActiveHours.js"
 
 export const flowPrincipalSinBienvenida = addKeyword(['1','informacion', "información", 'PRENDER', 'APAGAR'])
     .addAction(actionPower)
+    .addAction(actionActiveHours)
     .addAction(actionYaFueAtendido)
     .addAnswer(
         [
