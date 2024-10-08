@@ -23,7 +23,7 @@ export class PostgreService {
 
     async query(query, params = []) {
         let retryCount = 0;
-        const maxRetries = 1;
+        const maxRetries = 3;
 
         while (retryCount <= maxRetries) {
             try {
