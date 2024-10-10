@@ -8,7 +8,7 @@ export class ActiveHoursChecker{
       
         console.log("Current hour:", currentHour)
         // This only works if startHour > endHour (startHour = 21hs, endHour = 9hs)
-        if (currentHour >= startHour || currentHour < endHour) {
+        if (currentHour >= startHour || currentHour < (endHour-OFFSET)) {
           return true;
         }
         

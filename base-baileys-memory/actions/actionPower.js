@@ -8,6 +8,7 @@ export const actionPower = async (ctx, { endFlow }) => {
     ctx.body === 'PRENDER' ? global.powerService.turnOn() : global.powerService.turnOff();
 
     const message = ctx.body === 'PRENDER' ? 'Bot encendido' : 'Bot apagado';
+    console.log(message)
     return endFlow(message);
   }
 
