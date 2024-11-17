@@ -3,23 +3,16 @@ import { LoggerService } from '../services/logger.service.js';
 
 export class PostgreService {
     constructor() {
-        this.pgClient = null;
+        this.pgClient = new pg.Pool({
+            connectionString: process.env.DATABASE_URL,
+            max: 3, // Allow a maximum of 3 connections
+            idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
+            connectionTimeoutMillis: 2000, // Wait up to 2 seconds for a free connection
+        });
         this.loggerService = new LoggerService();
     }
 
-    async connect() {
-        if (!this.pgClient) {
-            this.pgClient = new pg.Client({ connectionString: process.env.DATABASE_URL });
-            await this.pgClient.connect();
-        }
-    }
 
-    async disconnect() {
-        if (this.pgClient) {
-            await this.pgClient.end();
-            this.pgClient = null;
-        }
-    }
 
     async query(query, params = []) {
         let retryCount = 0;
@@ -27,21 +20,23 @@ export class PostgreService {
 
         while (retryCount <= maxRetries) {
             try {
-                await this.connect();
-                const res = await this.pgClient.query(query, params);
-                return res.rows;
+                const client = await this.pgClient.connect(); // Get a connection from the pool
+                try {
+                    const res = await client.query(query, params);
+                    return res.rows;
+                } finally {
+                    client.release(); // Release the connection back to the pool
+                }
             } catch (err) {
                 retryCount++;
                 this.loggerService.error('Error executing query:', query, err);
                 if (retryCount <= maxRetries) {
                     this.loggerService.log(`Retrying query, attempt ${retryCount} of ${maxRetries}`);
+                } else {
+                    throw new Error('Query failed after retrying.');
                 }
-            } finally {
-                await this.disconnect();
             }
         }
-
-        throw new Error('Query failed after retrying.');
     }
 
     async addPhone(phone) {

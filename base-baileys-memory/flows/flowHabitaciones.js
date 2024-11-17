@@ -48,5 +48,6 @@ export const flowHabitaciones = addKeyword(['habitaciones', 'abitaciones', '2'])
         ]
     )
     .addAction( async (_, { gotoFlow }) => {
+        console.log("Dirigiendo a flowPrincipalSinBienvenida")
         return gotoFlow(flowPrincipalSinBienvenida)
     })

@@ -35,5 +35,6 @@ export const flowComplejos = addKeyword(['complejos','1']).
                 "📍Dirección: Castelli 520, Cañuelas"
             ]
             , null, async (_, { gotoFlow }) => {
+                console.log("Dirigiendo a flowPrincipalSinBienvenida")
                 return gotoFlow(flowPrincipalSinBienvenida);
             })
