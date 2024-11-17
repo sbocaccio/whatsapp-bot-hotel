@@ -26,4 +26,5 @@ INSERT INTO app_status (is_on) VALUES (true);
 INSERT INTO completed_flow (phone)
 VALUES (1234)
 ON CONFLICT (phone) DO NOTHING;
-
+```
+5. Update the ENV variable DATABASE_URL to the new value found in Connect >> Internal
