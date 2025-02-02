@@ -21,7 +21,7 @@ CREATE TABLE app_status (
     is_on BOOLEAN NOT NULL
 );
 
-INSERT INTO app_status (is_on) VALUES (true);
+INSERT INTO app_status (is_on) VALUES (false);
 
 INSERT INTO completed_flow (phone)
 VALUES (1234)
