@@ -7,7 +7,7 @@
 
 Now, you will create the tables and add the necessary rows to let the system be correctly configured.
 
-3. Copy the command from Connect >> External >> PSQL Command and run it in your local terminal
+3. Copy the command from Connect >> External >> PSQL Command and run it in your local terminal. Add psql to the copied code
 4. Run the following commands:
 
 ```bash
